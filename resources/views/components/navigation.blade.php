@@ -2,13 +2,19 @@
     <div class="max-w-4xl mx-auto flex justify-between items-center">
         <a href="/weights" class="text-white text-2xl font-bold">ピグリー</a>
         <nav class="flex gap-3 items-center">
-            <span class="text-white text-sm">{{ auth()->user()->name }}</span>
+            @auth
+                <span class="text-white text-sm">{{ auth()->user()->name }}</span>
             <form method="POST" action="/logout">
-                @csrf
-                <button type="submit" class="text-white text-sm hover:underline">
-                    ログアウト
-                </button>
-            </form>
+                    @csrf
+                    <button type="submit" class="text-white text-sm hover:underline">
+                        ログアウト
+                    </button>
+                </form>
+            @endauth
+             @guest
+                <a href="/login" class="text-white text-sm hover:underline">ログイン</a>
+                <a href="/register" class="text-white text-sm hover:underline">新規登録</a>
+            @endguest
         </nav>
     </div>
 </header>
