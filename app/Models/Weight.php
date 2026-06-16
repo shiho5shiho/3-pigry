@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Weight extends Model
 {
     use HasFactory;
-}
+
     protected $fillable = [
         'user_id',
         'recorded_date',
@@ -24,3 +24,4 @@ class Weight extends Model
     {
         return $this->belongsTo(User::class);
     }
+}

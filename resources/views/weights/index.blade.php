@@ -58,18 +58,23 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {{-- ダミーデータ --}}
+                        @forelse($weights as $weight)
                         <tr class="border-b hover:bg-gray-50">
-                            <td class="py-2">2026-05-01</td>
-                            <td class="py-2">65.5</td>
+                            <td class="py-2">{{ $weight->recorded_date }}</td>
+                            <td class="py-2">{{ $weight->weight }}</td>
                             <td class="py-2">
-                                <form method="POST" action="/weights/1">
+                                <form method="POST" action="/weights/{{ $weight->id }}">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="text-red-500 hover:underline text-xs">削除</button>
                                 </form>
                             </td>
                         </tr>
+                        @empty
+                        <tr>
+                            <td colspan="3" class="py-2 text-center text-gray-400">記録がありません</td>
+                        </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
@@ -90,10 +95,10 @@
         new Chart(ctx, {
             type: 'line',
             data: {
-                labels: ['5/1', '5/2', '5/3'],
+                labels: {!!$graphData->keys()->map(fn($date) =>\Carbon\Carbon::parse($date)->format('m/d'))->toJson()!!},
                 datasets: [{
                     label: '体重（kg）',
-                    data: [65.5, 65.0, 64.8],
+                    data: {!!$graphData->values()->map(fn($w) => $w->weight)->toJson()!!},
                     borderColor: 'rgb(59, 130, 246)',
                     backgroundColor: 'rgba(59, 130, 246, 0.1)',
                     tension: 0.3,
