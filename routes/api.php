@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\WeightController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +15,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::get('/weights', [WeightController::class, 'index']); 
+Route::get('/weights/{weight}', [WeightController::class, 'show']);
+
+// 認証ありAPIとして別途実装が必要
+Route::middleware('auth:sanctum')->group(function () {
+    Route::delete('/weights/{weight}', [WeightController::class, 'destroy']);
 });
